@@ -10,7 +10,6 @@ Vue.use(VueRouter)
     name: '/',
     component: Dashboard
   },
-  /*
   {
     path: "*",
     name: "NotFound",
@@ -18,7 +17,6 @@ Vue.use(VueRouter)
     children: [],
    component: () => import('../views/Error404.vue')
   }
-  */
 ]
 
 const router = new VueRouter({

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="wrapper">
     <tool-bar></tool-bar>
     <main><router-view :key="$route.fullPath"></router-view></main>
     <foot-bar></foot-bar>
@@ -17,6 +17,40 @@
         components: {
             ToolBar,
             FootBar,
+        },
+        data(){
+            return{
+                loadProperty:false,
+                dataProperty:{
+                    company:{},
+                },
+            }
+        },
+        created(){
+            this.getPropiedades();
+        },
+        mounted(){
+            this.loadObjEmpresa();
+        },
+        methods:{
+            ...mapMutations(['setLoading','setGlobales','setEmpresa', 'setRedesSociales']),
+            ...mapActions(['loadObjEmpresa']),
+            getPropiedades(){
+                this.setLoading(true);
+                
+                this.$http.get('webserviceserver/propiedades_empresa').then((res)=>{
+                    Vue.set(this.$data,'dataProperty',res.data);
+                    this.loadProperty=true;
+                    this.setGlobales({
+                        path_web:this.dataProperty.path_web,
+                    });
+                    this.setEmpresa(this.dataProperty.company);
+                    this.setRedesSociales(this.dataProperty.social_network);
+                }).finally(()=>{
+                    this.setLoading(false);
+                });
+                /**/
+            },
         },
     }
 </script>
