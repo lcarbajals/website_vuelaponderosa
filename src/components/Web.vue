@@ -1,6 +1,14 @@
 <template>
     <div>
-        <div class="swiper-container swiper-preloader swiper-btn-group swiper-btn-group-end text-white mt-1">
+        <div class="swiper-container swiper-preloader swiper-btn-group swiper-btn-group-end text-white mt-1"
+				data-swiper='{
+				"slidesPerView": 1,
+				"spaceBetween": 0,
+				"autoplay": { "delay" : 4500, "disableOnInteraction": false },
+				"loop": true,
+				"pagination": { "type": "bullets" }
+			}'
+		>
             <div class="swiper-wrapper" style="height:400px">
                 <div v-for="(val, key) in Slider_principal" :key="key" class="swiper-slide h-100 d-middle bg-white overlay-opacity-3 bg-cover" :style="{'background':'url('+val.path_file_image+')'}"></div>
             </div>
@@ -349,7 +357,7 @@
 
 				<div class="card-columns" data-aos="fade-up" data-aos-delay="450">
 					<a v-for="(val, key) in GaleriaGeneral" :key="key" :href="val.path_file_image" data-photoswipe="gallery" class="card border-0 photoswipe transition-hover-top transition-all-ease-250 overflow-hidden overlay-dark-hover overlay-opacity-2">
-						<img class="w-100 img-fluid lazy rounded" :data-src="val.path_file_image" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxIDEiIC8+" alt="...">
+						<img class="w-100 img-fluid lazy rounded" :data-src="val.path_file_image" :src="val.path_file_image" alt="...">
 					</a>
 				</div>
 			</div>
@@ -415,7 +423,6 @@
         mounted(){
             this.loadObjEmpresa();
             this.getPrincipal();
-            //document.title = "Bienvenido a la "+((this.empresa.abreviatura)??"LA PONDEROSA");
         },
         data(){
             return{

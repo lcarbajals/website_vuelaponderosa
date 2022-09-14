@@ -7,7 +7,12 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "aos": "^2.3.4",
     "axios": "^0.19.2",
+    "jquery": "^3.6.0",
+    "moment": "^2.29.4",
+    "popper.js": "^1.16.1-lts",
+    "toast": "^0.5.4",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
