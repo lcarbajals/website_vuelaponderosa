@@ -8,19 +8,19 @@
                 </div> 
                 <div style="text-align: center;"  class="pt-2 d-inline ">
                         <div role="status" class="spinner-grow text-success spinner-grow-sm  "  >
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only"></span>
                         </div>
                         <div role="status" class="spinner-grow text-success spinner-grow-sm "  >
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only"></span>
                         </div> 
                         <div role="status" class="spinner-grow text-success spinner-grow-sm " >
-                            <span class="sr-only">Loading...</span>
+                            <span class="sr-only"></span>
                         </div>
                 </div>
             </div>
         </div>
 
-        <header id="header" class="shadow-xs">
+        <header id="header" class="shadow-xs header-fixed header-sticky">
             <div id="top_bar" class="bg-light fs--14">
                 <div class="container">
                     <div class="text-nowrap">
@@ -82,19 +82,19 @@
 
                     <ul class="navbar-nav fs-6">
                         <li class="nav-item">
-							<a class="nav-link scroll-to" href="#wrapper">Inicio</a>
+							<a class="nav-link scroll-to" href="#header"    >Inicio</a>
 						</li>
                         <li class="nav-item">
-                            <a class="nav-link scroll-to" href="#section_about">Nosotros</a>
+                            <a class="nav-link scroll-to" href="#section_nosotros">Nosotros</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link scroll-to" href="#section_pricing">Nuestro producto</a>
+                            <a class="nav-link scroll-to" href="#section_productos">Nuestro producto</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link scroll-to" href="#section_contact">Clientes</a>
+                            <a class="nav-link scroll-to" href="#section_clientes">Clientes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link scroll-to" href="#section_contact">Contáctenos</a>
+                            <a class="nav-link scroll-to" href="#section_contacto">Contáctenos</a>
                         </li>
                     </ul>
                 </nav>
@@ -111,5 +111,13 @@
         computed:{
             ...mapState(['loading','globales','empresa', 'redes_sociales']),
         },
+        methods:{
+            goToSection(section){
+                
+                const element = document.getElementById(section);
+                element.scrollIntoView();
+
+            }
+        }
     }
 </script>

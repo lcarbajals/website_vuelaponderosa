@@ -1,24 +1,12 @@
 <template>
-    <div>
-		<!-- SECCION SLIDER PRINCIPAL -->
-        <div v-if="Slider_principal.length>0" class="swiper-container swiper-preloader swiper-btn-group swiper-btn-group-end text-white mt-1"
-				data-swiper='{
-				"slidesPerView": 1,
-				"spaceBetween": 0,
-				"autoplay": { "delay" : 4500, "disableOnInteraction": false },
-				"loop": true,
-				"pagination": { "type": "bullets" }
-			}'
-		>
-            <div class="swiper-wrapper" style="height:400px">
-                <div v-for="(val, key) in Slider_principal" :key="key" class="swiper-slide h-100 d-middle bg-white overlay-opacity-3 bg-cover" :style="{'background':'url('+val.path_file_image+')'}"></div>
-            </div>
+    <div >
 
-            <div class="swiper-button-next swiper-button-white"></div>
-            <div class="swiper-button-prev swiper-button-white"></div>
+		<carousel v-if="Slider_principal.length>0" :loop="true" :items="1" :nav="false"  :autoplay="true"   >
+ 			<img  v-for="(val, key) in Slider_principal" :key="key"  :src="val.path_file_image"  style="max-height: 400px;">
+		</carousel>
 
-            <div class="swiper-pagination"></div>
-        </div>
+	
+		
 
         <div class="section bg-light pt-5 pb-5">
             <div class="container"> 
@@ -62,7 +50,7 @@
             </div>
         </div>
 
-        <div class="section bg-light pt-5 pb-5">
+        <div id="section_productos" class="section bg-light pt-5 pb-5">
 			<div class="container">
 				<h2 class="h2 mb-4 mt-6">Nuestro producto</h2>
 
@@ -146,7 +134,7 @@
 					</div>
 					
                     <div class="col-lg-3 text-lg-end">
-						<a href="javascript:alert('esto falta chata')" class="btn btn-outline-light shadow-none btn-danger">
+						<a href="javascript:void(0)" @click="sendWhathsapp('Necesito una cotización');" class="btn btn-outline-light shadow-none btn-danger">
 							<b>Cotizar Ahora</b>
 							<svg width="18px" height="18px" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-arrow-right-short" viewBox="0 0 16 16">
 								<path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"></path>
@@ -165,7 +153,7 @@
 			<div class="container">
 				<h4 class="display-6 fw-bold text-center mb-5">Como producimos nuestros bloquetes</h4>
 				<div class="row">
-					<div v-for="(val, key) in ProcesoElaboracion" :key="key" class="col-6 col-lg-3 mb-4 aos-init aos-animate" data-aos="fade-up" data-aos-delay="0">
+					<div v-for="(val, key) in ProcesoElaboracion" :key="key" class="col-md-6 colg-sm-12 col-lg-3 mb-4 aos-init aos-animate" data-aos="fade-up" data-aos-delay="0">
 						<a href="javascript:void(0)" class="d-block bg-white rounded p-2 shadow-primary-xs text-dark text-decoration-none transition-hover-top transition-all-ease-250">
 							<img class="w-100 img-fluid rounded" style="height: 15rem;" :src="val.path_file_image" :alt="val.titulo">
 							<div class="px-2 py-3">
@@ -178,37 +166,16 @@
 			</div>
 		</div>
 
-        <!-- SECCION CLIENTES -->
-        <div class="container align-content-center pt-4">
+          <!-- SECCION CLIENTES -->
+		  <div id="section_clientes" class="container align-content-center pt-4">
 			<h4 class="fw-bold text-center mb-5">Algunos de nuestros clientes</h4>
-			<div class="swiper-container swiper-preloader swiper-white" 
-                data-swiper='{
-                    "slidesPerView": 4,
-                    "spaceBetween": 8,
-                    "slidesPerGroup": 1,
-                    "loop": true,
-                    "autoplay": { "delay" : 1500, "disableOnInteraction": false },
-                    "breakpoints": {
-                        "1024": { "slidesPerView": "3" },
-                        "920":	{ "slidesPerView": "2" },
-                        "640":	{ "slidesPerView": "1" }
-                    }
-                }'
-            >
-				<div class="hide swiper-wrapper">
-					<div v-for="(val, key) in Clientes" :key="key" class="swiper-slide">
-						<img :src="val.path_file_image" class="img-fluid w-100 h-75" :alt="val.razon_social">
-					</div>
-				</div>
-
-				<!-- Add Arrows -->
-				<div class="rounded-circle swiper-button-next"></div>
-				<div class="rounded-circle swiper-button-prev"></div>
-			</div>
+			<carousel v-if="Clientes.length>0" :loop="true" :items="4" :nav="false"  :autoplay="true"  :responsive="{0:{items:1,nav:false},600:{items:3,nav:true}}"  >
+ 			<img  v-for="(val, key) in Clientes" :key="key"  :src="val.path_file_image"  style="height:12rem ;"  class="img-fluid w-100  " :alt="val.razon_social" >
+		   </carousel>
 		</div>
 
         <!-- SECCION CONTACTENOS -->
-        <div id="section_contact" class="section mt-1 bg-light">
+        <div id="section_contacto" class="section mt-1 bg-light">
 			<div class="container">
 			    <div class="row">
 				    <div class="col-12 col-lg-6 mb-5">
@@ -333,7 +300,7 @@
 		</div>
 
         <!-- SECCION NOSOTROS -->
-        <section class="pt--10 pb-0">
+        <section id="section_nosotros" class="pt--10 pb-0">
 			<div class="container min-h-50vh pt-3">
 				<div class="row text-center-xs d-middle">
 					<div class="col-12 col-md-6 order-2 order-md-1 pb-5 aos-init aos-animate" data-aos="fade-up" data-aos-delay="0">
@@ -384,7 +351,15 @@
 
 <script>
     import {mapState, mapMutations, mapActions} from 'vuex';
+
+	   
+
+	import carousel from 'vue-owl-carousel'
+
+ 
+
     export default {
+		components: { carousel },
         name: 'Web',
         computed:{
             ...mapState(['loading','globales','empresa']),
@@ -408,6 +383,8 @@
         mounted(){
             this.loadObjEmpresa();
             this.getPrincipal();
+
+		  
 			 
         },
         data(){
@@ -498,6 +475,8 @@
                     this.setLoading(false);
                 });
             },
+		 
+
         }
     }
 </script>

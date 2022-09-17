@@ -62,5 +62,10 @@ export default{
         isObject(o) {
             return o instanceof Object && o.constructor === Object;
         },
+        sendWhathsapp(msj){                
+            let tel='51'+this.empresa.telefonos
+            let urlW="https://api.whatsapp.com/send?phone="+tel+"&text="+msj;
+            window.open(urlW, '_blank');
+        }
     }
 }

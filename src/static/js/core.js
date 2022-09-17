@@ -782,8 +782,12 @@ $.SOW.init();
             _offset = 15;
 
         // .header-fixed is added by js header plugin for all: .header-sticky, .header-scroll-reveal
-        else if($.SOW.globals.elBody.hasClass('header-fixed') || $.SOW.globals.elBody.hasClass('header-sticky'))
-            _offset = $.SOW.globals.elHeader.outerHeight() + 15;
+        else if($.SOW.globals.elBody.hasClass('header-fixed') || $.SOW.globals.elBody.hasClass('header-sticky')){
+
+             
+          _offset =  15;
+        }
+            
 
       }
 
