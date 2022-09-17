@@ -10,7 +10,14 @@ export default new Vuex.Store({
       path_web:'',
       name_year:'',
     },
-    empresa:{},
+    empresa:{
+      razon_social:"",
+      telefonos:"",
+      email:"",
+      direccion:"",
+      latitud:"",
+      longitud:"",
+    },
     redes_sociales:[],
   },
   mutations: {
@@ -21,8 +28,10 @@ export default new Vuex.Store({
       Vue.set(state,'loading',value);
     },
     setEmpresa:(state,obj)=>{
-      Vue.set(state,'empresa',obj);
-      localStorage.setItem('empresa', JSON.stringify(obj));
+      if(obj){
+        Vue.set(state,'empresa',obj);
+        localStorage.setItem('empresa', JSON.stringify(obj));
+      }
     },
     setRedesSociales:(state,obj)=>{
       Vue.set(state,'redes_sociales',obj);

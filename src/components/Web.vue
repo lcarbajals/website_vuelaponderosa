@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="swiper-container swiper-preloader swiper-btn-group swiper-btn-group-end text-white mt-1"
+		<!-- SECCION SLIDER PRINCIPAL -->
+        <div v-if="Slider_principal.length>0" class="swiper-container swiper-preloader swiper-btn-group swiper-btn-group-end text-white mt-1"
 				data-swiper='{
 				"slidesPerView": 1,
 				"spaceBetween": 0,
@@ -13,11 +14,9 @@
                 <div v-for="(val, key) in Slider_principal" :key="key" class="swiper-slide h-100 d-middle bg-white overlay-opacity-3 bg-cover" :style="{'background':'url('+val.path_file_image+')'}"></div>
             </div>
 
-            <!-- Add Arrows -->
             <div class="swiper-button-next swiper-button-white"></div>
             <div class="swiper-button-prev swiper-button-white"></div>
 
-            <!-- Add Pagination -->
             <div class="swiper-pagination"></div>
         </div>
 
@@ -78,37 +77,11 @@
 								<a href="javascript:void(0)" class="text-dark fw-medium">{{Producto.nombre_producto}}</a>
 							</h2>
 
-							<span class="text-muted">Calidad certificada</span>
+							<!--<span class="text-muted">Calidad certificada</span> -->
 						</div>
 
 						<div class="mb-4">
-							<p class="text-justify">
-								Elaborado con una masa de concreto de primera calidad para así prevenir la
-								humedad en su totalidad, contamos con personal experimentado en la
-								elaboración de nuestros bloquetes con una maquina industrial ponedora que
-								así garantiza la elaboración de un mejor producto.
-							</p>
-							
-                            <table class="table table-condensed table-bordered table-responsive table-sm ">
-								<tr>
-								<td> Largo </td>
-								<td> 39cm </td>
-								<td> Ancho </td>
-								<td> 12cm  </td>
-							</tr>
-							<tr>
-								<td> Alto </td>
-								<td> 18 cm </td>
-								<td> Peso</td>
-								<td> 8Kg </td>
-							</tr>
-							<tr>
-								<td> Resistencia a la Compresión </td>
-								<td> 44.90 Kgf/cm² </td>
-								<td></td>
-								<td></td>
-							</tr>
-							</table>
+							<p class="text-justify" v-html="Producto.descripcion"></p>
 						</div>
 					</div>
 				</div>
@@ -145,9 +118,11 @@
 						<h2 class="h1 fw-bold mb-4">Contamos con certificación</h2>
 
 						<p class="lead mb-2" v-html="Certificacion.descripcion"></p>
+						<!--
 						<a href="files/bloques.pdf" target="_blank" class="scroll-to btn btn-primary btn-soft js-scrolltoified">
 							Ver Certificación
 						</a>
+						-->
 					</div>
 				</div>
 			</div>
@@ -269,13 +244,7 @@
                                 style="height:400px"
 					            :data-map-tile="empresa.razon_social"
 					            data-map-zoom="8"
-					            :data-map-json='[
-                                                {
-                                                "map_lat": empresa.latitud,
-                                                "map_long": empresa.longitud,
-                                                "map_popup": "<b>"+empresa.razon_social+"</b> <br> "+empresa.direccion+" / Perú <br> <a href=`javascript:void(0)`>(+051) "+empresa.telefonos+"</a>"
-                                                }
-	                        				  ]'
+					            :data-map-json="map_json"
                             >
                                 <!-- map container-->
                             </div>
@@ -419,10 +388,27 @@
         name: 'Web',
         computed:{
             ...mapState(['loading','globales','empresa']),
+			map_json(){
+				/*return `[
+					{
+					"map_lat": ${this.empresa.latitud},
+					"map_long": ${this.empresa.longitud},
+					"map_popup": "<b>+${this.empresa.razon_social}+</b> <br> ${this.empresa.direccion} / Perú <br> <a href="javascript:void(0)">(+051) ${this.empresa.telefonos}</a>"
+					}
+				]`;*/
+				return JSON.stringify([
+					{
+						"map_lat": this.empresa.latitud,
+						"map_long": this.empresa.longitud,
+						"map_popup": "<b>"+this.empresa.razon_social+"</b> <br> "+this.empresa.direccion+" / Perú <br> <a href='javascript:void(0)'>(+051) "+this.empresa.telefonos+"</a>"
+					}
+				]);
+			}
         },
         mounted(){
             this.loadObjEmpresa();
             this.getPrincipal();
+			 
         },
         data(){
             return{
@@ -469,17 +455,33 @@
                 this.setLoading(true);
                 
                 this.$http.get('webserviceserver/principal').then((res)=>{
-                    this.Slider_principal       = res.data.SliderMain;
-                    this.Slogans                = res.data.Slogans;
-                    //this.Producto               = res.data.Product;
-                    this.Certificacion          = res.data.Certifications;
-                    this.ProcesoElaboracion     = res.data.ProcessElaboration;
-                    this.Clientes               = res.data.Clients;
-                    this.GaleriaGeneral         = res.data.GaleryMain;
+                    if(res.data.SliderMain)
+						this.Slider_principal       = res.data.SliderMain;
+
+					if(res.data.Slogans)
+                    	this.Slogans                = res.data.Slogans;
+					
+					if(res.data.Product)
+                    	this.Producto               = res.data.Product;
+
+					if(res.data.Certifications)
+                    	this.Certificacion          = res.data.Certifications;
+
+					if(res.data.ProcessElaboration)
+                    	this.ProcesoElaboracion     = res.data.ProcessElaboration;
+
+					if(res.data.Clients)
+                    	this.Clientes               = res.data.Clients;
+
+					if(res.data.GaleryMain)
+                    	this.GaleriaGeneral         = res.data.GaleryMain;
+
                     if(res.data.About)
                         this.Nosotros           = res.data.About;
+
                     if(res.data.Mision)
                         this.Mision             = res.data.Mision;
+
                     if(res.data.Vision)
                         this.Vision             = res.data.Vision;
                     
@@ -488,6 +490,10 @@
                         if((key+1) !=_this.Slogans.length)
                             _this.typedString+="|";
                     });
+
+					this.$nextTick(()=>{
+						$.SOW.vendor.typed.process($('.typed'));
+					});
                 }).finally(()=>{
                     this.setLoading(false);
                 });
