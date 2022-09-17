@@ -46,6 +46,9 @@
                     });
                     this.setEmpresa(this.dataProperty.company);
                     this.setRedesSociales(this.dataProperty.social_network);
+                    this.$nextTick(()=>{
+						$.SOW.vendor.leaflet.map_openstreet($('.map-leaflet'));
+					});
                 }).finally(()=>{
                     this.setLoading(false);
                 });

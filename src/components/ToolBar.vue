@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div id="loading"  v-if="loading">
+        <div id="loading" v-if="loading">
             <div class="load-circle text-center" style=" ">
                 <div style="text-align: center;">
-                    <img src="https://www.drasam.gob.pe/public/img/logo_goresam_2019.png" class="img-fluid" style="text-align: center;">
+                    <img :src="'/img/loading_empresa__0001.png'" class="img-fluid" style="text-align: center;">
 
                 </div> 
                 <div style="text-align: center;"  class="pt-2 d-inline ">

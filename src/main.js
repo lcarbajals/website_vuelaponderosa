@@ -6,7 +6,6 @@ import store from './store'
 import mixins from './mixins';
 /* INSTALADOS */
 import axios from 'axios';
-import AOS from 'aos';
 
 Vue.config.productionTip = false
 window.baseUrl  = process.env.VUE_APP_ROOT_API;
@@ -22,21 +21,14 @@ const instance  = axios.create({
 });
 
 window.$ = window.jQuery = require('jquery');
-//window.Popper = require('popper.js').default;
 
-
-
-
+window.AOS=require('aos');
+window.Typed=require('typed.js');
+require('./static/js/core.init');
 require('./static/js/core');
-//require('./static/js/sow.helper');
-
-//require('./static/js/vendor.typed');
-require('./static/js/vendor.aos');
-//require('./static/js/vendor.leaflet');
-//require('./static/js/vendor.swiper');
-
+require('./static/js/vendor_bundle.prev');
 require('./static/js/vendor_bundle');
-//AOS.init();
+
 Vue.mixin(mixins);
 Vue.prototype.$http=instance;
 new Vue({
