@@ -389,13 +389,6 @@
         computed:{
             ...mapState(['loading','globales','empresa']),
 			map_json(){
-				/*return `[
-					{
-					"map_lat": ${this.empresa.latitud},
-					"map_long": ${this.empresa.longitud},
-					"map_popup": "<b>+${this.empresa.razon_social}+</b> <br> ${this.empresa.direccion} / Perú <br> <a href="javascript:void(0)">(+051) ${this.empresa.telefonos}</a>"
-					}
-				]`;*/
 				return JSON.stringify([
 					{
 						"map_lat": this.empresa.latitud,
