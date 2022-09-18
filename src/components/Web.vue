@@ -169,8 +169,12 @@
           <!-- SECCION CLIENTES -->
 		  <div id="section_clientes" class="container align-content-center pt-4">
 			<h4 class="fw-bold text-center mb-5">Algunos de nuestros clientes</h4>
-			<carousel v-if="Clientes.length>0" :loop="true" :items="4" :nav="false"  :autoplay="true"  :responsive="{0:{items:1,nav:false},600:{items:3,nav:true}}"  >
- 			<img  v-for="(val, key) in Clientes" :key="key"  :src="val.path_file_image"  style="height:12rem ;"  class="img-fluid w-100  " :alt="val.razon_social" >
+			<carousel v-if="Clientes.length>0" :loop="true" :items="4" :nav="false"  :autoplay="true"  :responsive="{0:{items:1,nav:false},600:{items:3,nav:true},1024:{items:4,nav:true}} "  >
+				<div v-for="(val, key) in Clientes" :key="key" class="text-center" >
+					<img   :src="val.path_file_image"  style="height:12rem ;"  class="img-fluid w-100  " :alt="val.razon_social" >
+					<b class="text-center">{{val.razon_social | truncate(34,'...')}}</b>
+				</div>
+				
 		   </carousel>
 		</div>
 
@@ -477,6 +481,15 @@
             },
 		 
 
-        }
+        },
+		filters: {
+			truncate: function (text, length, suffix) {
+				if (text.length > length) {
+					return text.substring(0, length) + suffix;
+				} else {
+					return text;
+				}
+			},
+    	}
     }
 </script>
