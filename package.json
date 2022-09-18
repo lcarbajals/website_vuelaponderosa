@@ -12,6 +12,7 @@
     "jquery": "^3.6.0",
     "moment": "^2.29.4",
     "popper.js": "^1.16.1-lts",
+    "sweetalert2": "^11.4.33",
     "toast": "^0.5.4",
     "typed.js": "^2.0.12",
     "vue": "^2.6.11",

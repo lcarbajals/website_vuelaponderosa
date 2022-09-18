@@ -223,61 +223,37 @@
 					        <div class="m-5 m-4-xs w-100">
 					            <h2 class="mb-4">Puede dejarnos un mensaje</h2>
 					  
-					            <form novalidate
-						            method="POST"
-
-                                    data-ajax-container="#ajax_dd_contact_response_container"
-                                    data-ajax-update-url="false"
-                                    data-ajax-show-loading-icon="true"
-                                    data-ajax-callback-function=""
-                                    data-error-scroll-up="false"
-
-                                    data-ajax-control-alerts="true"
-                                    data-ajax-control-alert-succes="#contactSuccess"
-                                    data-ajax-control-alert-unexpected="#contactErrorUnexpected"
-                                    data-ajax-control-alert-mandaroty="#contactErrorMandatory"
-
-                                    data-error-toast-text="<i class='fi fi-circle-spin fi-spin float-start'></i> Please, complete all required fields!"
-                                    data-error-toast-delay="2000"
-                                    data-error-toast-position="bottom-center"
-
-                                    class="bs-validate js-ajax"
-                                >
+					            <form novalidate method="POST" lass="bs-validate">
                                     <div class="form-floating mb-3">
-                                        <input required placeholder="Name" id="contact_name" name="contact_name" type="text" class="form-control">
-                                        <label for="contact_name">Nombres</label>
+                                        <input required v-model="form.nombres_completo" ref="nombres_completo" type="text" class="form-control">
+                                        <label for="contact_name">Nombres y Apellidos</label>
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <input required placeholder="email" id="contact_email" name="contact_email" type="email" class="form-control">
+                                        <input required v-model="form.correo_electronico" ref="correo_electronico" type="email" class="form-control">
                                         <label for="contact_email">Email</label>
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <input required placeholder="Telefono/Celular" id="contact_phone" name="contact_phone" type="text" class="form-control">
+                                        <input required v-model="form.telefono" ref="telefono" type="text" class="form-control">
                                         <label for="contact_phone">Telefono/Celular</label>
                                     </div>
 
                                     <div class="form-floating mb-3">
-                                        <textarea required placeholder="Mensaje" id="contact_message" name="contact_message" class="form-control" rows="3" style="min-height:120px"></textarea>
+                                        <textarea required v-model="form.mensaje" ref="mensaje" class="form-control" rows="3" style="min-height:120px"></textarea>
                                         <label for="contact_message">Mensaje</label>
                                     </div>
 
-                                    <div id="ajax_dd_contact_response_container"></div>
-
-                                    <div id="contactErrorUnexpected" class="hide alert alert-danger p-3">
-                                        Unexpected Error!
+                                    <div v-if="errors.length" :class="['form-group']">
+                                        <p style="color:red" >
+                        	                <b>Por favor corrija los siguientes Errores:</b>
+                                            <ul>
+                                                <li v-for="(error, key) in errors" :key="key">{{ error }}</li>
+                                            </ul>
+                                        </p>
                                     </div>
 
-                                    <div id="contactErrorMandatory" class="hide alert alert-danger p-3">
-                                    Please, review your data and try again!
-                                    </div>
-
-                                    <div id="contactSuccess" class="hide alert alert-success p-3">
-                                        Thank you for your message!
-                                    </div>
-
-                                    <button type="button" class="btn btn-lg btn-primary w-100">Enviar mensaje</button>
+                                    <button type="button" @click="enviarMail" class="btn btn-lg btn-primary w-100">Enviar mensaje</button>
 			    		        </form>
 				    	    </div>
 				        </div>
@@ -351,12 +327,7 @@
 
 <script>
     import {mapState, mapMutations, mapActions} from 'vuex';
-
-	   
-
-	import carousel from 'vue-owl-carousel'
-
- 
+	import carousel from 'vue-owl-carousel';
 
     export default {
 		components: { carousel },
@@ -376,9 +347,6 @@
         mounted(){
             this.loadObjEmpresa();
             this.getPrincipal();
-
-		  
-			 
         },
         data(){
             return{
@@ -415,6 +383,14 @@
                     contenido:"<div>No se registró la visión de LA PONDEROSA</div>"
                 },
                 typedString:"",
+
+				errors: [],
+                form:{
+                    nombres_completo:"",
+                    correo_electronico:"",
+					telefono:"",
+                    mensaje:"",
+                }
             }
         },
         methods:{
@@ -468,8 +444,73 @@
                     this.setLoading(false);
                 });
             },
-		 
+			enviarMail(){
+                var self = this;
+                this.errors = [];
+                if(this.form.nombres_completo==""){
+					this.$refs.nombres_completo.focus();
+                    this.errors.push("El nombre es obligatorio.");
+					return;
+				}
+                
+                if(this.form.correo_electronico==""){
+					this.$refs.correo_electronico.focus();
+                    this.errors.push("El correo electronico es obligatorio.");
+					return;
+				}else if(!this.validEmail(this.form.correo_electronico)){
+                    this.$refs.correo_electronico.focus();
+                    this.errors.push('El correo electrónico debe ser válido.');
+                    return;
+                }
 
+				if(this.form.telefono==""){
+					this.$refs.telefono.focus();
+                    this.errors.push("El telefono es obligatorio.");
+					return;
+				}else if(!this.validEmail(this.form.correo_electronico)){
+                    this.$refs.correo_electronico.focus();
+                    this.errors.push('El correo electrónico debe ser válido.');
+                    return;
+                }
+
+                if(this.form.mensaje==""){
+					this.$refs.mensaje.focus();
+                    this.errors.push("El mensaje es obligatorio.");
+					return;
+				}
+
+                self.setLoading(true);
+				let formData = new FormData();
+				formData.append("nombres_completo", this.form.nombres_completo);
+                formData.append("correo_electronico", this.form.correo_electronico);
+				formData.append("telefono", this.form.telefono);
+                formData.append("mensaje", this.form.mensaje);
+
+                this.$http.post('webserviceserver/contactenos_mail', formData).then((res)=>{
+					console.log(res);
+				   if(res.status==200){
+						this.alertSuccess(res.data.msg, function(){
+						   location.reload();
+					   });
+				   }else{
+						console.log(res.data.errors);
+					   this.alertWarning("Hubo problemas al enviar su correo, intente en 5 minutos", function(){
+						   location.reload();
+					   });
+				   }
+                }).finally(()=>{
+                    this.setLoading(false);
+                }).catch((e)=>{
+					console.log(e.response);
+					if(e.response && e.response.status && e.response.status==422){
+						$.each(e.response.data.errors, function(k, v){
+							$.each(v, function(kk, vv){
+								self.errors.push(vv);
+							});
+                        });
+					}
+				});
+            },
         }
     }
 </script>

@@ -1,7 +1,50 @@
+import Swal from 'sweetalert2';
+const defaults = {
+    title: "Confirmar",
+    text: "",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#ed5565",
+    confirmButtonText: "Eliminar",
+    cancelButtonText: "Cancelar",
+    reverseButtons: true,
+};
+
 export default{
     methods:{
         isFunction(functionToCheck) {
             return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+        },
+        validEmail (email) {
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        },
+        alert(options, callback){
+            if(typeof options.icon == "undefined")
+                options.icon = "info";
+            options.showCancelButton=false;   
+            options.confirmButtonText='Aceptar';
+            options.confirmButtonColor='#3085d6';
+            const settings = $.extend({}, defaults, options);
+            if(this.isFunction(callback)){
+                Swal.fire(settings).then((result) => {
+                    callback(true);
+                })
+                return;
+            }
+            Swal.fire(settings);
+        },
+        alertSuccess(message,callback){
+            this.alert({icon:'success',title:'Mensaje',text:message},callback);
+        },
+        alertWarning(message,callback){
+            this.alert({icon:'warning',title:'Advertencia',text:message},callback);
+        },
+        alertError(message,callback){
+            this.alert({icon:'error',title:'Error',text:message},callback);
+        },
+        alertInfo(message,callback){
+            this.alert({icon:'info',title:'Info',text:message},callback);
         },
         forEach(collection, callback, scope){
             if (Object.prototype.toString.call(collection) === '[object Object]') {
